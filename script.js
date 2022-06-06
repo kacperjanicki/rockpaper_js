@@ -4,7 +4,8 @@ function computerPlay() {
     return choices[computerChoice]
 } 
 
-const user_choice=prompt('Your choice:');
+var user_score = 0;
+var computer_score = 0;
 
 function playRound(playerSelection,computerSelection) {
     // make user input case-insensitive
@@ -13,47 +14,67 @@ function playRound(playerSelection,computerSelection) {
     
     let user=user_input
     let computer=computerSelection
+
     console.log(user,computer)
     if (user == computer) {
         return('tie');
     } else if (user == 'Paper') {
         if (computer == 'Rock') {     //case1
+            user_score+=1
             return('You win, paper beats rock');
+            
         } else if (computer=='Scissors') {
+            computer_score+=1
             return('You lose, scissors beat paper');
+            
         }
     } else if (user == 'Rock') {   //case2
         if (computer=='Paper') {
+            computer_score+=1
             return('You lose, paper beats rock');
         } else if (computer=='Scissors') {
+            user_score+=1
             return('You win, rock beats scissors');
         }
     } else if (user == 'Scissors') {  //case3
         if (computer=='Paper') {
-            return('You win, scissors beat paper');
-        } else if (computer == 'Rock') {
-            return('You lose, rock beats scissors');
-        }
-    }   
-}
-
-function game(user,computer) {
-    let user_score=0
-    let computer_score=0
-    for (let i=0; i< 5; i++) {
-        computer=computerPlay()     //generate new choice every iteration
-        result=playRound(user,computer)
-        let your_score=result.slice(0,8).replace(',','')
-        console.log(result)
-        if (your_score == 'You win') {
             user_score+=1
-        } else if (your_score == 'You lose') {
+            return('You win, scissors beat paper');
+            
+        } else if (computer == 'Rock') {
             computer_score+=1
+            return('You lose, rock beats scissors');
+            
         }
     }
-    console.log(`User score:${user_score}\nComputer score:${computer_score}`)
-
-    
 }
 
-game(user_choice,computerPlay())
+const button = document.querySelector("#button")
+const update_user = document.querySelector("#update")
+var promptdata
+
+button.addEventListener('click', function (e) {
+    let promptdata=prompt('Your choice:');
+    game(1,promptdata)
+    update_user.innerHTML = `your current score: ${user_score},<br>Computer score: ${computer_score}`
+    console.log(user_score,computer_score)
+    button.innerHTML = 'Continue playing'
+    
+  });
+  
+console.log(promptdata)
+function game(n,data) {
+    for (let i=0;i<n;i++) {
+        const your_choice = document.getElementById('container')
+        const computer_choice = computerPlay()
+        const user_choice = data
+        var game_result = playRound(user_choice,computer_choice)
+        your_choice.innerHTML = `You chose: ${user_choice}<br>Computer chose: ${computer_choice}
+        <br>Game result: ${game_result}`
+    }
+}
+
+
+
+
+
